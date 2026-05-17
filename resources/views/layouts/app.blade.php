@@ -3,6 +3,7 @@
 <head>
     <title>Smart Garden</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/jpeg" href="{{ asset('img/Logo_smart_garden.jpeg') }}">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
@@ -18,7 +19,8 @@
 
     <div class="sidebar p-3">
     <h4 class="mb-4">
-        <img src="" alt="Smart Garden" style="height: 30px; width: auto;">
+        <img src="{{ asset('img/Logo_smart_garden.jpeg') }}" alt="Smart Garden" style="height: 30px; width: auto;">
+        Smart Garden
     </h4>
 
     <ul class="nav flex-column sidebar-menu">
