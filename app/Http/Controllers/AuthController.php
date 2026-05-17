@@ -37,6 +37,6 @@ class AuthController extends Controller
             return redirect('/');
         }
 
-        return back()->with('error', 'Password salah');
+        return back()->with('error', 'Password yang anda masukkan salah');
     }
 }

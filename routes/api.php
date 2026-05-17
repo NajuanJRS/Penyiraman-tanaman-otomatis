@@ -10,7 +10,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-
+Route::middleware('apikey')->group(function () {
 Route::get('/perkembangan', [ApiPerkembanganController::class, 'index']);
 
 Route::post('/perkembangan', [ApiPerkembanganController::class, 'store']);
@@ -22,3 +22,4 @@ Route::post('/prediksi', [ApiPrediksiController::class, 'store']);
 Route::get('/kontrol', [ApiKontrolController::class, 'index']);
 
 Route::put('/kontrol/{id}', [ApiKontrolController::class, 'update']);
+});
