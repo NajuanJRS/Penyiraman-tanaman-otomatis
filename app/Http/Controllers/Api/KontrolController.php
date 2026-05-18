@@ -11,10 +11,19 @@ class KontrolController extends Controller
 {
     public function index()
     {
-        $kontroller = Kontroller::all();
+        $kontrol = Kontroller::first();
+
+        if (!$kontrol) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Data kontrol tidak ditemukan'
+            ], 404);
+        }
+
         return response()->json([
-            'message' => 'Kontrol berhasil diambil',
-            'data' => $kontroller
+            'status' => true,
+            'mode_manual' => $kontrol->mode_manual,
+            'mode_otomatis' => $kontrol->mode_otomatis,
         ]);
     }
 
