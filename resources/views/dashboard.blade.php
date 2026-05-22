@@ -101,6 +101,112 @@ Swal.fire({
 var chartTanah = {!! json_encode($chartTanah) !!};
 var chartUdara = {!! json_encode($chartUdara) !!};
 var chartSuhu = {!! json_encode($chartSuhu) !!};
+
+// Grafik Kelembapan
+new Chart(document.getElementById('chartKelembapan'), {
+    type: 'line',
+    data: {
+        datasets: [
+            {
+                label: 'Kelembapan Tanah (%)',
+                data: chartTanah,
+                borderWidth: 2,
+                tension: 0.3
+            },
+            {
+                label: 'Kelembapan Udara (%)',
+                data: chartUdara,
+                borderWidth: 2,
+                tension: 0.3
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+                display: true,
+                text: 'Grafik Kelembapan - {{ $periode }}'
+            }
+        },
+        scales: {
+            x: {
+                type: 'time',
+                time: {
+                    unit: 'day',
+                    displayFormats: {
+                        day: 'dd'
+                    }
+                },
+                ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 10
+                },
+                title: {
+                    display: true,
+                    text: 'Tanggal'
+                }
+            },
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Persentase (%)'
+                }
+            }
+        }
+    }
+});
+
+// Grafik Suhu
+new Chart(document.getElementById('chartSuhu'), {
+    type: 'line',
+    data: {
+        datasets: [{
+            label: 'Suhu (°C)',
+            data: chartSuhu,
+            borderWidth: 2,
+            tension: 0.3
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+                display: true,
+                text: 'Grafik Suhu - {{ $periode }}'
+            }
+        },
+        scales: {
+            x: {
+                type: 'time',
+                time: {
+                    unit: 'day',
+                    displayFormats: {
+                        day: 'dd'
+                    }
+                },
+                ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 10
+                },
+                title: {
+                    display: true,
+                    text: 'Tanggal'
+                }
+            },
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Suhu (°C)'
+                }
+            }
+        }
+    }
+});
 </script>
 @endsection
 
