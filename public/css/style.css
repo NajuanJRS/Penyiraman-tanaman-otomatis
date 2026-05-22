@@ -40,14 +40,6 @@ body {
     color: white;
 }
 
-.img-preview {
-    width: 200px;
-    height: 100px;
-    object-fit: contain;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-}
-
 .img-table {
     width: 100px;
     height: 80px;
@@ -75,18 +67,22 @@ body {
 .img-preview{
     width: 100%;
     max-width: 300px;
-
     height: auto;
-
     border-radius: 10px;
-
     object-fit: contain;
-
     border: 1px solid #ddd;
-
     padding: 5px;
-
     background: white;
+}
+
+.preview-modal-img{
+    width: auto;
+    max-width: 100%;
+    max-height: 70vh;
+    object-fit: contain;
+    border-radius: 12px;
+    display: block;
+    margin: auto;
 }
 
 .btn-edit-gambar{
@@ -219,11 +215,13 @@ body {
     }
 
     .img-preview{
-                max-width: 180px;
-
+        max-width: 180px;
         display: block;
-
         margin: auto;
+    }
+
+    .preview-modal-img{
+        max-height: 60vh;
     }
 
     /* CHART */
