@@ -11,16 +11,31 @@ class PerkembanganController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $search = request('search');
+        $search = $request->input('search');
 
         $perkembangan = Perkembangan::with('prediksi')
         ->when($search, function ($query, $search) {
-                return $query->where('waktu', 'like', '%' . $search . '%');
+                return $query->where('waktu', 'like', "%{$search}%");
             })
             ->orderBy('id_perkembangan', 'desc')
             ->paginate(10);
+
+        // AJAX REQUEST
+        if ($request->ajax()) {
+
+            return response()->json([
+
+                'table' => view(
+                    'partials.tableHistori',
+                    compact('perkembangan')
+                )->render(),
+
+                'pagination' => $perkembangan->links()->render()
+
+            ]);
+        }
 
         return view('perkembangan', compact('perkembangan'));
     }
@@ -115,5 +130,27 @@ class PerkembanganController extends Controller
         } catch (\Exception $e) {
             return back()->withErrors(['general' => $e->getMessage()]);
         }
+    }
+
+    public function hapusGambar($id)
+    {
+        $perkembangan = Perkembangan::findOrFail($id);
+
+        // cek apakah ada gambar
+        if ($perkembangan->gambar) {
+
+            // hapus file dari storage
+            if (Storage::disk('public')->exists($perkembangan->gambar)) {
+
+                Storage::disk('public')->delete($perkembangan->gambar);
+            }
+
+            // kosongkan kolom gambar
+            $perkembangan->gambar = null;
+
+            $perkembangan->save();
+        }
+
+        return redirect('/histori')->with('success', 'Gambar berhasil dihapus');
     }
 }

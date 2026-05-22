@@ -55,3 +55,206 @@ body {
     border-radius: 6px;
     border: 1px solid #ddd;
 }
+
+.img-table{
+    width: 100px;
+    height: 80px;
+    object-fit: contain;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.img-table:hover{
+    transform: scale(1.05);
+}
+
+/* =========================
+   IMAGE PREVIEW
+========================= */
+
+.img-preview{
+    width: 100%;
+    max-width: 300px;
+
+    height: auto;
+
+    border-radius: 10px;
+
+    object-fit: contain;
+
+    border: 1px solid #ddd;
+
+    padding: 5px;
+
+    background: white;
+}
+
+.btn-edit-gambar{
+    padding: 6px 10px;
+    font-size: 14px;
+    border-radius: 6px;
+}
+
+/* =========================
+   MOBILE NAVBAR
+========================= */
+
+.mobile-navbar{
+    display: none;
+}
+
+/* =========================
+   RESPONSIVE MOBILE
+========================= */
+
+@media (max-width: 768px){
+
+    /* NAVBAR MOBILE */
+
+    .mobile-navbar{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: white;
+        padding: 0 15px;
+        z-index: 1200;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    /* SIDEBAR */
+
+    .sidebar{
+        width: 250px;
+        transform: translateX(-100%);
+        transition: 0.3s;
+        z-index: 1300;
+    }
+
+    .show-sidebar{
+        transform: translateX(0);
+    }
+
+    /* OVERLAY */
+
+    .sidebar-overlay{
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.4);
+        opacity: 0;
+        visibility: hidden;
+        transition: 0.3s;
+        z-index: 1250;
+    }
+
+    .show-overlay{
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* CONTENT */
+
+    .content{
+        margin-left: 0;
+        padding: 80px 15px 20px 15px;
+    }
+
+    /* CARD */
+
+    .card-box{
+        padding: 12px;
+        margin-bottom: 15px;
+    }
+
+    /* TEXT */
+
+    h3{
+        font-size: 22px;
+    }
+
+    h4{
+        font-size: 20px;
+    }
+
+    h5{
+        font-size: 18px;
+    }
+
+    h6{
+        font-size: 16px;
+    }
+
+    p{
+        font-size: 14px;
+    }
+
+    .swal2-container{
+    z-index: 99999 !important;
+    }
+
+    .swal2-toast{
+        margin-top: 70px !important;
+    }
+
+    /* TABLE */
+
+    .table{
+        font-size: 12px;
+    }
+
+    .table-responsive{
+        overflow-x: auto;
+    }
+
+    /* IMAGE */
+
+    .img-table{
+        width: 70px;
+        height: 60px;
+        object-fit: contain;
+    }
+
+    .img-preview{
+                max-width: 180px;
+
+        display: block;
+
+        margin: auto;
+    }
+
+    /* CHART */
+
+    canvas{
+        width: 100% !important;
+        height: 250px !important;
+    }
+
+    /* BUTTON */
+
+    .btn{
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+
+    /* GRID MOBILE */
+
+    .row > [class*='col-']{
+        margin-bottom: 15px;
+    }
+
+    .btn-edit-gambar{
+        padding: 3px 6px !important;
+        font-size: 11px !important;
+        border-radius: 5px;
+        min-width: auto;
+    }
+
+    .btn-edit-gambar i{
+        font-size: 11px;
+    }
+
+}

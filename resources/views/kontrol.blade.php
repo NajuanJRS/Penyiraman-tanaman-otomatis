@@ -8,11 +8,13 @@
 @if(session('success'))
 <script>
 Swal.fire({
+    toast: true,
+    position: 'top-end',
     icon: 'success',
-    title: 'Berhasil',
-    text: '{{ session('success') }}',
-    timer: 2000,
-    showConfirmButton: false
+    title: '{{ session('success') }}',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true
 });
 </script>
 
@@ -35,11 +37,11 @@ Swal.fire({
 
             <i class="bi bi-power" style="font-size: 80px;"></i>
 
-            <form id="formOtomatis" method="POST" action="/kontrol/otomatis">
+            <form id="formOtomatis" method="POST" action="{{ route('kontrol.otomatis') }}">
                 @csrf
             </form>
 
-            <form id="formOff" method="POST" action="/kontrol/off">
+            <form id="formOff" method="POST" action="{{ route('kontrol.off') }}">
                 @csrf
             </form>
 
@@ -70,7 +72,7 @@ Swal.fire({
 
             <i class="bi bi-power" style="font-size: 80px;"></i>
 
-            <form id="formManual" method="POST" action="/kontrol/manual">
+            <form id="formManual" method="POST" action="{{ route('kontrol.manual') }}">
                 @csrf
             </form>
 

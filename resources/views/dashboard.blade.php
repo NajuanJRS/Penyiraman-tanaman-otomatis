@@ -5,6 +5,21 @@
 <h3>Dashboard</h3>
 <p>Monitoring sensor dan status sistem real-time</p>
 
+@if(session('success'))
+<script>
+Swal.fire({
+    toast: true,
+    position: 'top-end',
+    icon: 'success',
+    title: '{{ session('success') }}',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true
+});
+</script>
+
+@endif
+
 <div class="row mb-4">
     <div class="col-md-3">
         <div class="card-box">
@@ -41,7 +56,9 @@
     <div class="col-md-6">
         <div class="card-box">
             <h5>Grafik Kelembapan Tanah & Udara</h5>
-            <canvas id="chartKelembapan"></canvas>
+            <div style="height: 300px;">
+                <canvas id="chartKelembapan"></canvas>
+            </div>
         </div>
     </div>
 
@@ -49,7 +66,9 @@
     <div class="col-md-6">
         <div class="card-box">
             <h5>Grafik Suhu</h5>
-            <canvas id="chartSuhu"></canvas>
+            <div style="height: 300px;">
+                <canvas id="chartSuhu"></canvas>
+            </div>
         </div>
     </div>
 
@@ -60,7 +79,7 @@
     <p>Tanah: {{ $tanah }} | Suhu: {{ $suhu }} | Udara: {{ $udara }}</p>
     @if($decision === 'Siram')
 
-        <div class="d-flex align-items-center gap-3">
+        <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
             <h5 class="mb-0">
                 <b>Ya, tanaman perlu disiram</b>
             </h5>
@@ -82,108 +101,6 @@
 var chartTanah = {!! json_encode($chartTanah) !!};
 var chartUdara = {!! json_encode($chartUdara) !!};
 var chartSuhu = {!! json_encode($chartSuhu) !!};
-
-// Grafik Kelembapan
-new Chart(document.getElementById('chartKelembapan'), {
-    type: 'line',
-    data: {
-        datasets: [
-            {
-                label: 'Kelembapan Tanah (%)',
-                data: chartTanah,
-                borderWidth: 2,
-                tension: 0.3
-            },
-            {
-                label: 'Kelembapan Udara (%)',
-                data: chartUdara,
-                borderWidth: 2,
-                tension: 0.3
-            }
-        ]
-    },
-    options: {
-        plugins: {
-            title: {
-                display: true,
-                text: 'Grafik Kelembapan - {{ $periode }}'
-            }
-        },
-        scales: {
-            x: {
-                type: 'time',
-                time: {
-                    unit: 'day',
-                    displayFormats: {
-                        day: 'dd'
-                    }
-                },
-                ticks: {
-                    autoSkip: true,
-                    maxTicksLimit: 10
-                },
-                title: {
-                    display: true,
-                    text: 'Tanggal'
-                }
-            },
-            y: {
-                beginAtZero: true,
-                title: {
-                    display: true,
-                    text: 'Persentase (%)'
-                }
-            }
-        }
-    }
-});
-
-// Grafik Suhu
-new Chart(document.getElementById('chartSuhu'), {
-    type: 'line',
-    data: {
-        datasets: [{
-            label: 'Suhu (°C)',
-            data: chartSuhu,
-            borderWidth: 2,
-            tension: 0.3
-        }]
-    },
-    options: {
-        plugins: {
-            title: {
-                display: true,
-                text: 'Grafik Suhu - {{ $periode }}'
-            }
-        },
-        scales: {
-            x: {
-                type: 'time',
-                time: {
-                    unit: 'day',
-                    displayFormats: {
-                        day: 'dd'
-                    }
-                },
-                ticks: {
-                    autoSkip: true,
-                    maxTicksLimit: 10
-                },
-                title: {
-                    display: true,
-                    text: 'Tanggal'
-                }
-            },
-            y: {
-                beginAtZero: true,
-                title: {
-                    display: true,
-                    text: 'Suhu (°C)'
-                }
-            }
-        }
-    }
-});
 </script>
 @endsection
 
