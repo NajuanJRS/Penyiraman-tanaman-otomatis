@@ -124,10 +124,26 @@ new Chart(document.getElementById('chartKelembapan'), {
     options: {
         responsive: true,
         maintainAspectRatio: false,
+        events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
+        interaction: {
+            mode: 'nearest',
+            axis: 'x',
+            intersect: false
+        },
         plugins: {
+            tooltip: {
+                enabled: true
+            },
             title: {
                 display: true,
                 text: 'Grafik Kelembapan - {{ $periode }}'
+            }
+        },
+        elements: {
+            point: {
+                radius: 4,
+                hoverRadius: 8,
+                hitRadius: 20
             }
         },
         scales: {
@@ -173,10 +189,26 @@ new Chart(document.getElementById('chartSuhu'), {
     options: {
         responsive: true,
         maintainAspectRatio: false,
+        events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
+        interaction: {
+            mode: 'nearest',
+            axis: 'x',
+            intersect: false
+        },
         plugins: {
+            tooltip: {
+                enabled: true
+            },
             title: {
                 display: true,
                 text: 'Grafik Suhu - {{ $periode }}'
+            }
+        },
+        elements: {
+            point: {
+                radius: 4,
+                hoverRadius: 8,
+                hitRadius: 20
             }
         },
         scales: {
