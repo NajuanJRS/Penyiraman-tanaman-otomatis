@@ -40,11 +40,10 @@
 <!-- SIDEBAR -->
 <div class="sidebar p-3" id="sidebar">
 
-    <h4 class="mb-4">
+    <h4 class="sidebar-title mb-4" style="color:white;">
         <img src="{{ asset('img/Logo_smart_garden.jpeg') }}"
              alt="Smart Garden"
-             style="height: 30px; width: auto;">
-
+             style="height: 30px; width: auto; border-radius:8px; margin-right:8px;">
         Smart Garden
     </h4>
 

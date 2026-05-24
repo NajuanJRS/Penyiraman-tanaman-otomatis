@@ -1,6 +1,6 @@
 @foreach ($perkembangan as $p)
     <tr>
-        <td>{{ $loop->iteration }}</td>
+        <td >{{ $loop->iteration }}</td>
         <td>{{ $p->waktu }}</td>
         <td>{{ $p->kelembapan_tanah }} %</td>
         <td>{{ $p->kelembapan_udara }} %</td>
