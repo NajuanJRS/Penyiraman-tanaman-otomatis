@@ -80,13 +80,13 @@ class DashboardController extends Controller
         $kontrol->mode_manual = 1;
         $kontrol->save();
 
-        // Tunggu 5 detik
-        sleep(5);
+        // Tunggu 8 detik
+        sleep(8);
 
         // Matikan kembali
         $kontrol->mode_manual = 0;
         $kontrol->save();
 
-        return back()->with('success', 'Pompa berhasil dijalankan selama 5 detik');
+        return back()->with('success', 'Pompa berhasil dijalankan selama 8 detik');
     }
 }
