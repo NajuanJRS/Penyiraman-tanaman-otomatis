@@ -93,7 +93,7 @@ class PerkembanganController extends Controller
 
         private function hitungKeputusan($tanah, $udara, $suhu)
         {
-            if ($tanah < 60) {
+            if ($tanah <= 40) {
                 return 'Siram';
             } else {
                 return 'Tidak Siram';
