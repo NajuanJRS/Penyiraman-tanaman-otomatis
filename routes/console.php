@@ -10,8 +10,8 @@ Artisan::command('inspire', function () {
 
 // Penyiraman jam 06:06
 Schedule::command('app:auto-siram')
-    ->dailyAt('06:06');
+    ->dailyAt('06:07');
 
 // Penyiraman jam 13:06
 Schedule::command('app:auto-siram')
-    ->dailyAt('13:06');
+    ->dailyAt('13:07');
