@@ -2,7 +2,16 @@
 
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+// Penyiraman jam 06:06
+Schedule::command('app:auto-siram')
+    ->dailyAt('06:06');
+
+// Penyiraman jam 13:06
+Schedule::command('app:auto-siram')
+    ->dailyAt('13:06');
