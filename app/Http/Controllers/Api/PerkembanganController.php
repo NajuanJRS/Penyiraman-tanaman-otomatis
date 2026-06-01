@@ -94,7 +94,7 @@ class PerkembanganController extends Controller
     public function updateGambar(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,webp,gif|max:2048',
         ]);
 
         if ($validator->fails()) {
