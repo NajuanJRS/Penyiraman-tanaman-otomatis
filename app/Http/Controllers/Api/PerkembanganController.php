@@ -91,13 +91,94 @@ class PerkembanganController extends Controller
 
     }
 
-        private function hitungKeputusan($tanah, $udara, $suhu)
-        {
-            if ($tanah <= 40) {
-                return 'Siram';
-            } else {
-                return 'Tidak Siram';
-            }
+    public function updateGambar(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ], 422);
         }
+
+        try {
+
+            $perkembangan = Perkembangan::findOrFail($id);
+
+            // Hapus gambar lama
+            if (
+                $perkembangan->gambar &&
+                Storage::disk('public')->exists($perkembangan->gambar)
+            ) {
+                Storage::disk('public')->delete($perkembangan->gambar);
+            }
+
+            // Upload gambar baru
+            $path = Storage::disk('public')->put(
+                'perkembangan',
+                $request->file('gambar')
+            );
+
+            $perkembangan->gambar = $path;
+            $perkembangan->save();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Gambar berhasil diperbarui',
+                'data' => $perkembangan
+            ]);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage()
+            ], 500);
+
+        }
+    }
+
+    public function hapusGambar($id)
+    {
+        try {
+
+            $perkembangan = Perkembangan::findOrFail($id);
+
+            if (
+                $perkembangan->gambar &&
+                Storage::disk('public')->exists($perkembangan->gambar)
+            ) {
+                Storage::disk('public')->delete($perkembangan->gambar);
+            }
+
+            $perkembangan->gambar = null;
+            $perkembangan->save();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Gambar berhasil dihapus'
+            ]);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage()
+            ], 500);
+
+        }
+    }
+
+    private function hitungKeputusan($tanah, $udara, $suhu)
+    {
+        if ($tanah <= 40) {
+            return 'Siram';
+        } else {
+            return 'Tidak Siram';
+        }
+    }
 
 }

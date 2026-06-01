@@ -15,6 +15,10 @@ Route::get('/perkembangan', [ApiPerkembanganController::class, 'index']);
 
 Route::post('/perkembangan', [ApiPerkembanganController::class, 'store']);
 
+Route::post('/perkembangan/{id}/gambar', [ApiPerkembanganController::class, 'updateGambar']);
+
+Route::delete('/perkembangan/{id}/gambar', [ApiPerkembanganController::class, 'hapusGambar']);
+
 Route::get('/prediksi', [ApiPrediksiController::class, 'index']);
 
 Route::post('/prediksi', [ApiPrediksiController::class, 'store']);
