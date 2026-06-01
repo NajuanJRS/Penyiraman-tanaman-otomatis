@@ -118,7 +118,7 @@ class PerkembanganController extends Controller
                 }
 
                 // Simpan gambar baru
-                $path = $request->file('gambar')->store('gambar_perkembangan', 'public');
+                $path = $request->file('gambar')->store('perkembangan', 'public');
 
                 $perkembangan->gambar = $path;
             }
