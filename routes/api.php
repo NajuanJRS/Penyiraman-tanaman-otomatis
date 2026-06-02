@@ -11,9 +11,10 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::post('/login', [ApiAuthController::class, 'login']);
 
 Route::middleware('apikey')->group(function () {
+Route::post('/login', [ApiAuthController::class, 'login']);
+
 Route::get('/perkembangan', [ApiPerkembanganController::class, 'index']);
 
 Route::post('/perkembangan', [ApiPerkembanganController::class, 'store']);
