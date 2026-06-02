@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController as ApiAuthController;
 use App\Http\Controllers\Api\PerkembanganController as ApiPerkembanganController;
 use App\Http\Controllers\Api\PrediksiController as ApiPrediksiController;
 use App\Http\Controllers\Api\KontrolController as ApiKontrolController;
@@ -9,6 +10,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+Route::post('/login', [ApiAuthController::class, 'login']);
 
 Route::middleware('apikey')->group(function () {
 Route::get('/perkembangan', [ApiPerkembanganController::class, 'index']);
