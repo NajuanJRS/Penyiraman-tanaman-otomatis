@@ -13,6 +13,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.30.0/locale/id/index.min.js"></script>
+
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 

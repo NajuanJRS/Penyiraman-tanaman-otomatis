@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Kontroller;
 use App\Models\Perkembangan;
 use App\Models\Prediksi;
+use Carbon\Carbon as CarbonAlias;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -15,6 +15,7 @@ class DashboardController extends Controller
     {
         $latestPerkembangan = Perkembangan::orderBy('id_perkembangan', 'desc')->first();
         $latestPrediksi = Prediksi::orderBy('id_prediksi', 'desc')->first();
+        CarbonAlias::setLocale('id');
 
         // Status pompa
         $status = ($latestPrediksi && $latestPrediksi->decision == 'Siram') ? 'Aktif' : 'Mati';
