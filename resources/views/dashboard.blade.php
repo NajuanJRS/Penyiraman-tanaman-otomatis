@@ -105,14 +105,25 @@
                 datasets: [{
                         label: 'Kelembapan Tanah (%)',
                         data: chartTanah,
-                        borderWidth: 2,
-                        tension: 0.3
+                        borderWidth: 3,
+                        borderColor: '#2e7d32',
+                        backgroundColor: '#2e7d32',
+                        tension: 0.5,
+                        pointRadius: 0,
+                        pointHoverRadius: 8,
+                        pointHitRadius: 20,
                     },
                     {
                         label: 'Kelembapan Udara (%)',
                         data: chartUdara,
-                        borderWidth: 2,
-                        tension: 0.3
+                        borderWidth: 3,
+                        borderColor: '#42a5f5',
+                        backgroundColor: '#42a5f5',
+                        tension: 0.5,
+                        pointRadius: 0,
+                        pointHoverRadius: 8,
+                        pointHitRadius: 20,
+                        tension: 0.3,
                     }
                 ]
             },
@@ -197,8 +208,13 @@
                 datasets: [{
                     label: 'Suhu (°C)',
                     data: chartSuhu,
-                    borderWidth: 2,
-                    tension: 0.3
+                    borderWidth: 3,
+                    borderColor: '#ff7043',
+                    backgroundColor: '#ff7043',
+                    tension: 0.5,
+                    pointRadius: 0,
+                    pointHoverRadius: 8,
+                    pointHitRadius: 20,
                 }]
             },
             options: {
