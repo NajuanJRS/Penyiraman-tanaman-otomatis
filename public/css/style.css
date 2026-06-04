@@ -102,6 +102,9 @@ body {
     display: none;
 }
 
+#btnDatetime{
+    min-width: 50px;
+}
 /* =========================
    RESPONSIVE MOBILE
 ========================= */
@@ -223,7 +226,10 @@ body {
     }
 
     /* TABLE */
-
+    #btnDatetime{
+        min-width: 45px;
+    }
+    
     .table{
         font-size: 12px;
     }

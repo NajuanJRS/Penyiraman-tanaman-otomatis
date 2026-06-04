@@ -1,7 +1,7 @@
 @foreach ($perkembangan as $p)
     <tr>
         <td >{{ $perkembangan->firstItem() + $loop->index }}</td>
-        <td>{{ $p->waktu }}</td>
+        <td>{{ \Carbon\Carbon::parse($p->waktu)->format('d/m/Y H:i:s') }}</td>
         <td>{{ $p->kelembapan_tanah }} %</td>
         <td>{{ $p->kelembapan_udara }} %</td>
         <td>{{ $p->suhu }} °C</td>
