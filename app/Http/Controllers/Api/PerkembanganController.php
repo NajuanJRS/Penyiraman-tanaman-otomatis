@@ -28,7 +28,7 @@ class PerkembanganController extends Controller
             'kelembapan_tanah' => 'required|numeric|max:255',
             'kelembapan_udara' => 'required|numeric|max:255',
             'suhu' => 'required|numeric|max:255',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
         ], [
             'kelembapan_tanah.required' => 'Kelembapan tanah harus diisi',
             'kelembapan_tanah.numeric' => 'Kelembapan tanah harus berupa angka',
@@ -38,7 +38,7 @@ class PerkembanganController extends Controller
             'suhu.numeric' => 'Suhu harus berupa angka',
             'gambar.image' => 'File harus berupa gambar',
             'gambar.mimes' => 'Format gambar harus jpeg, png, jpg, atau gif',
-            'gambar.max' => 'Ukuran gambar maksimal 2MB',
+            'gambar.max' => 'Ukuran gambar maksimal 10MB',
         ]);
 
         // JIKA VALIDASI GAGAL
@@ -116,7 +116,7 @@ class PerkembanganController extends Controller
     public function updateGambar(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,webp,gif',
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,webp,gif|max:10240',
         ]);
 
         if ($validator->fails()) {
