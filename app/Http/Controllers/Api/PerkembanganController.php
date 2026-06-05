@@ -8,6 +8,8 @@ use App\Models\Prediksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Laravel\Facades\Image;
+use Illuminate\Support\Str;
 
 class PerkembanganController extends Controller
 {
@@ -51,7 +53,27 @@ class PerkembanganController extends Controller
         try {
         $gambarPath = null;
         if ($request->hasFile('gambar')) {
-            $gambarPath = Storage::disk('public')->put('perkembangan', $request->file('gambar'));
+            $image = Image::read(
+                $request->file('gambar')
+            );
+
+            $image->scale(
+                width: 1600
+            );
+
+            $filename =
+                Str::uuid() . '.jpg';
+            $path =
+                storage_path(
+                    'app/public/perkembangan/' . $filename
+                );
+
+            $image->toJpeg(
+                quality: 85
+            )->save($path);
+
+            $gambarPath =
+                'perkembangan/' . $filename;
         }
 
         $perkembangan = Perkembangan::create([
@@ -116,11 +138,28 @@ class PerkembanganController extends Controller
                 Storage::disk('public')->delete($perkembangan->gambar);
             }
 
-            // Upload gambar baru
-            $path = Storage::disk('public')->put(
-                'perkembangan',
+            // Kompres gambar baru
+            $image = Image::read(
                 $request->file('gambar')
             );
+
+            // Resize jika terlalu besar
+            $image->scale(
+                width: 1600
+            );
+
+            $filename = Str::uuid() . '.jpg';
+
+            $path = storage_path(
+                'app/public/perkembangan/' . $filename
+            );
+
+            // Simpan sebagai JPG terkompresi
+            $image->toJpeg(
+                quality: 85
+            )->save($path);
+
+            $path = 'perkembangan/' . $filename;
 
             $perkembangan->gambar = $path;
             $perkembangan->save();
