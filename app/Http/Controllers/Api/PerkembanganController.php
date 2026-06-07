@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
 use Illuminate\Support\Str;
+use App\Models\FcmToken;
+use App\Services\FirebaseNotificationService;
+use Kreait\Firebase\Messaging\AndroidConfig;
 
 class PerkembanganController extends Controller
 {
@@ -89,6 +92,30 @@ class PerkembanganController extends Controller
                 $request->kelembapan_udara,
                 $request->suhu
             );
+
+        $lastPrediksi = Prediksi::orderByDesc(
+            'id_prediksi'
+        )->first();
+
+        if (
+            $decision === 'Siram' &&
+            (
+                !$lastPrediksi ||
+                $lastPrediksi->decision !== 'Siram'
+            )
+        ) {
+
+            $tokens = FcmToken::all();
+
+            foreach ($tokens as $token) {
+
+                $this->firebase->send(
+                    $token->token,
+                    'Caba.IoT',
+                    'Tanaman perlu disiram. Periksa status penyiraman.'
+                );
+            }
+        }
 
         // 🔥 3. Simpan ke tabel prediksi
         Prediksi::create([
@@ -178,6 +205,14 @@ class PerkembanganController extends Controller
             ], 500);
 
         }
+    }
+
+    private FirebaseNotificationService $firebase;
+
+    public function __construct(
+        FirebaseNotificationService $firebase
+    ){
+        $this->firebase = $firebase;
     }
 
     public function hapusGambar($id)

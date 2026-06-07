@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController as ApiAuthController;
 use App\Http\Controllers\Api\PerkembanganController as ApiPerkembanganController;
 use App\Http\Controllers\Api\PrediksiController as ApiPrediksiController;
 use App\Http\Controllers\Api\KontrolController as ApiKontrolController;
+use App\Http\Controllers\Api\FcmController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,8 @@ Route::get('/user', function (Request $request) {
 
 Route::middleware('apikey')->group(function () {
 Route::post('/login', [ApiAuthController::class, 'login']);
+
+Route::post('/fcm-token', [FcmController::class, 'store']);
 
 Route::get('/perkembangan', [ApiPerkembanganController::class, 'index']);
 
