@@ -98,25 +98,25 @@ class PerkembanganController extends Controller
             'id_prediksi'
         )->first();
 
-        if (
-            $decision === 'Siram' &&
-            (
-                !$lastPrediksi ||
-                $lastPrediksi->decision !== 'Siram'
-            )
-        ) {
+        // if (
+        //     $decision === 'Siram' &&
+        //     (
+        //         !$lastPrediksi ||
+        //         $lastPrediksi->decision !== 'Siram'
+        //     )
+        // ) {
 
-            $tokens = FcmToken::all();
+        //     $tokens = FcmToken::all();
 
-            foreach ($tokens as $token) {
+        //     foreach ($tokens as $token) {
 
-                $this->firebase->send(
-                    $token->token,
-                    'Caba.IoT',
-                    'Tanaman perlu disiram. Periksa status penyiraman.'
-                );
-            }
-        }
+        //         $this->firebase->send(
+        //             $token->token,
+        //             'Caba.IoT',
+        //             'Tanaman perlu disiram. Periksa status penyiraman.'
+        //         );
+        //     }
+        // }
 
         // 🔥 3. Simpan ke tabel prediksi
         Prediksi::create([
