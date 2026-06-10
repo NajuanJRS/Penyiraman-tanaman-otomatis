@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use App\Models\FcmToken;
 use App\Models\Kontroller;
 use App\Services\FirebaseNotificationService;
+use Illuminate\Support\Facades\Log;
 use Kreait\Firebase\Messaging\AndroidConfig;
 
 class PerkembanganController extends Controller
@@ -98,31 +99,42 @@ class PerkembanganController extends Controller
             'id_prediksi'
         )->first();
 
-        // if (
-        //     $decision === 'Siram' &&
-        //     (
-        //         !$lastPrediksi ||
-        //         $lastPrediksi->decision !== 'Siram'
-        //     )
-        // ) {
-
-        //     $tokens = FcmToken::all();
-
-        //     foreach ($tokens as $token) {
-
-        //         $this->firebase->send(
-        //             $token->token,
-        //             'Caba.IoT',
-        //             'Tanaman perlu disiram. Periksa status penyiraman.'
-        //         );
-        //     }
-        // }
-
-        // 🔥 3. Simpan ke tabel prediksi
         Prediksi::create([
             'id_perkembangan' => $perkembangan->id_perkembangan,
             'decision' => $decision
         ]);
+
+        if (
+            $decision === 'Siram' &&
+            (
+                !$lastPrediksi ||
+                $lastPrediksi->decision !== 'Siram'
+            )
+        ) {
+
+            $tokens = FcmToken::all();
+
+            foreach ($tokens as $token) {
+
+                try {
+
+                    $this->firebase->send(
+                        $token->token,
+                        'Caba.IoT',
+                        'Tanaman perlu disiram. Periksa status penyiraman.'
+                    );
+
+                } catch (\Exception $e) {
+
+                    Log::warning(
+                        'Token tidak valid: ' .
+                        $token->token
+                    );
+
+                    $token->delete();
+                }
+            }
+        }
 
         return response()->json([
             'message' => 'Data perkembangan berhasil disimpan',
