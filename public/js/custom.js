@@ -58,6 +58,23 @@ function confirmSave() {
     });
 }
 
+function confirmSaveKelembapan() {
+    Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Perubahan batas kelembapan akan disimpan",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#007bff',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Ya, simpan!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('thresholdForm').submit();
+        }
+    });
+}
+
 function previewImage(event) {
     let file = event.target.files[0];
     if (!file) return;

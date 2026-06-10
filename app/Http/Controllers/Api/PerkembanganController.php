@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
 use Illuminate\Support\Str;
 use App\Models\FcmToken;
+use App\Models\Kontroller;
 use App\Services\FirebaseNotificationService;
 use Kreait\Firebase\Messaging\AndroidConfig;
 
@@ -248,11 +249,15 @@ class PerkembanganController extends Controller
 
     private function hitungKeputusan($tanah, $udara, $suhu)
     {
-        if ($tanah <= 40) {
+        $kontrol = Kontroller::first();
+
+        $batas = $kontrol->batas_kelembapan ?? 40;
+
+        if ($tanah <= $batas) {
             return 'Siram';
-        } else {
-            return 'Tidak Siram';
         }
+
+        return 'Tidak Siram';
     }
 
 }

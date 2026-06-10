@@ -13,5 +13,6 @@ class Kontroller extends Model
     protected $fillable = [
         'mode_otomatis',
         'mode_manual',
+        'batas_kelembapan',
     ];
 }

@@ -18,6 +18,7 @@ Route::get('kontrol', [KontrollerController::class, 'index']);
 Route::post('kontrol/otomatis', [KontrollerController::class, 'otomatis'])->name('kontrol.otomatis');
 Route::post('kontrol/manual', [KontrollerController::class, 'manual'])->name('kontrol.manual');
 Route::post('kontrol/off', [KontrollerController::class, 'off'])->name('kontrol.off');
+Route::post('/kontrol/threshold', [KontrollerController::class, 'updateThreshold'])->name('kontrol.threshold');
 Route::get('histori', [PerkembanganController::class, 'index'])->name('histori');
 Route::get('histori/export', [PerkembanganController::class, 'export'])->name('histori.export');
 Route::get('histori/{id_perkembangan}/edit', [PerkembanganController::class, 'edit'])->name('histori.edit');
