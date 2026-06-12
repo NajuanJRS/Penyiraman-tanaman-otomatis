@@ -40,7 +40,7 @@ class KontrolController extends Controller
         $validator = Validator::make($request->all(), [
             'mode_otomatis' => 'required|boolean',
             'mode_manual' => 'required|boolean',
-            'batas_kelembapan' => 'nullable|numeric|min:0|max:11',
+            'batas_kelembapan' => 'nullable|numeric|min:0|max:100',
         ], [
             'mode_otomatis.required' => 'Mode otomatis harus diisi',
             'mode_otomatis.boolean' => 'Mode otomatis harus berupa boolean',
@@ -48,7 +48,7 @@ class KontrolController extends Controller
             'mode_manual.boolean' => 'Mode manual harus berupa boolean',
             'batas_kelembapan.numeric' => 'Batas kelembapan harus berupa angka',
             'batas_kelembapan.min' => 'Batas kelembapan minimal 0',
-            'batas_kelembapan.max' => 'Batas kelembapan maksimal 11',
+            'batas_kelembapan.max' => 'Batas kelembapan maksimal 100',
         ]);
 
         if ($validator->fails()) {
