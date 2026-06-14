@@ -15,3 +15,7 @@ Artisan::command('inspire', function () {
 // // Penyiraman jam 13:07
 // Schedule::command('app:auto-siram')
 //     ->dailyAt('13:07');
+
+Schedule::command('app:capture-camera-image')
+    ->everyTenSeconds()
+    ->withoutOverlapping();
