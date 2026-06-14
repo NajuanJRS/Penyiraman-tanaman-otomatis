@@ -17,5 +17,5 @@ Artisan::command('inspire', function () {
 //     ->dailyAt('13:07');
 
 Schedule::command('app:capture-camera-image')
-    ->everyTwoHours()
+    ->everyTenSeconds()
     ->withoutOverlapping();
