@@ -78,7 +78,7 @@ function confirmSaveKelembapan() {
 function previewImage(event) {
     let file = event.target.files[0];
     const preview = document.getElementById('preview');
-    const empty = document.querySelector('.preview-empty');
+    const empty = document.getElementById('previewEmpty') || document.querySelector('.preview-empty') || document.querySelector('.edit-preview-empty');
 
     if (!file) {
         preview.style.display = 'none';
