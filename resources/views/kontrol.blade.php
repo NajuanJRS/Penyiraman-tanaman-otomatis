@@ -42,7 +42,7 @@
                 </div>
 
                 <h4 class="mode-card__title">Mode Otomatis</h4>
-                <p class="mode-card__desc">Pompa menyiram secara otomatis berdasarkan pembacaan sensor kelembapan tanah.</p>
+                <p class="mode-card__desc">Pompa menyiram secara otomatis berdasarkan pembacaan sensor.</p>
 
                 <div class="mode-card__footer">
                     @if ($mode_otomatis == 1)
@@ -71,7 +71,7 @@
                 </div>
 
                 <h4 class="mode-card__title">Mode Manual</h4>
-                <p class="mode-card__desc">Pompa dijalankan secara langsung melalui tombol penyiraman di halaman dashboard.</p>
+                <p class="mode-card__desc">Pompa dijalankan secara langsung tanpa intervensi otomatis.</p>
 
                 <div class="mode-card__footer">
                     @if ($mode_manual == 1)

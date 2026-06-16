@@ -71,7 +71,7 @@
                 <div>
                     <span>Status Pompa</span>
                     <strong class="metric-status">{{ $status }}</strong>
-                    <small>Mode perangkat</small>
+                    <small>Mode pompa</small>
                 </div>
             </div>
         </div>
