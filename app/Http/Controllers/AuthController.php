@@ -39,4 +39,11 @@ class AuthController extends Controller
 
         return back()->with('error', 'Password yang anda masukkan salah');
     }
+
+    public function logout()
+    {
+        Session::flush();
+
+        return redirect('/login');
+    }
 }

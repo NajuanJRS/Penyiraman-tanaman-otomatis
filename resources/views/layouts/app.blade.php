@@ -23,16 +23,15 @@
 <!-- MOBILE NAVBAR -->
 <div class="mobile-navbar d-md-none">
 
-    <button class="btn btn-light" id="menu-toggle">
+    <button class="btn btn-light" id="menu-toggle" aria-label="Buka menu">
         <i class="bi bi-list"></i>
     </button>
 
-    <div class="d-flex align-items-center">
+    <div class="mobile-brand">
         <img src="{{ asset('img/Logo_smart_garden.jpeg') }}"
-             alt="Smart Garden"
-             style="height:35px;width:auto;">
+             alt="Smart Garden">
 
-        <span class="ms-2 fw-bold">
+        <span>
             Smart Garden
         </span>
     </div>
@@ -40,50 +39,88 @@
 </div>
 
 <!-- SIDEBAR -->
-<div class="sidebar p-3" id="sidebar">
+<aside class="sidebar" id="sidebar">
 
-    <h4 class="sidebar-title mb-4" style="color:white;">
-        <img src="{{ asset('img/Logo_smart_garden.jpeg') }}"
-             alt="Smart Garden"
-             style="height: 30px; width: auto; border-radius:8px; margin-right:8px;">
-        Smart Garden
-    </h4>
+    <div class="sidebar-brand">
+        <div class="brand-logo">
+            <img src="{{ asset('img/Logo_smart_garden.jpeg') }}"
+                 alt="Smart Garden">
+        </div>
+
+        <div>
+            <h4 class="sidebar-title">
+                Smart Garden
+            </h4>
+            <span class="sidebar-subtitle">
+                Monitoring System
+            </span>
+        </div>
+    </div>
+
+    <div class="sidebar-status">
+        <div class="status-icon">
+            <i class="bi bi-broadcast-pin"></i>
+        </div>
+        <div>
+            <span>Panel aktif</span>
+            <strong>Perangkat kebun siap dipantau</strong>
+        </div>
+    </div>
+
+    <div class="sidebar-section-label">
+        Menu Utama
+    </div>
 
     <ul class="nav flex-column sidebar-menu">
 
-        <li class="nav-item mb-2">
+        <li class="nav-item">
             <a href="/"
                class="nav-link {{ request()->is('/') ? 'active' : '' }}">
 
-                <i class="bi bi-speedometer2"></i>
-                Dashboard
+                <span class="nav-icon">
+                    <i class="bi bi-speedometer2"></i>
+                </span>
+                <span>Dashboard</span>
 
             </a>
         </li>
 
-        <li class="nav-item mb-2">
+        <li class="nav-item">
             <a href="/kontrol"
                class="nav-link {{ request()->is('kontrol') ? 'active' : '' }}">
 
-                <i class="bi bi-sliders"></i>
-                Kontrol
+                <span class="nav-icon">
+                    <i class="bi bi-sliders"></i>
+                </span>
+                <span>Kontrol</span>
 
             </a>
         </li>
 
-        <li class="nav-item mb-2">
+        <li class="nav-item">
             <a href="/histori"
                class="nav-link {{ request()->is('histori') ? 'active' : '' }}">
 
-                <i class="bi bi-clock-history"></i>
-                Histori
+                <span class="nav-icon">
+                    <i class="bi bi-clock-history"></i>
+                </span>
+                <span>Histori</span>
 
             </a>
         </li>
 
     </ul>
 
-</div>
+    <div class="sidebar-footer">
+        <a href="{{ route('logout') }}" class="logout-link">
+            <span class="nav-icon">
+                <i class="bi bi-box-arrow-left"></i>
+            </span>
+            <span>Logout</span>
+        </a>
+    </div>
+
+</aside>
 
 <!-- OVERLAY -->
 <div class="sidebar-overlay" id="sidebar-overlay"></div>

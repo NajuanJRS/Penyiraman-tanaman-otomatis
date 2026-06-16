@@ -77,14 +77,22 @@ function confirmSaveKelembapan() {
 
 function previewImage(event) {
     let file = event.target.files[0];
-    if (!file) return;
-    let reader = new FileReader();
+    const preview = document.getElementById('preview');
+    const empty   = document.querySelector('.preview-empty');
 
+    if (!file) {
+        preview.style.display = 'none';
+        preview.src = '';
+        if (empty) empty.style.display = '';
+        return;
+    }
+
+    let reader = new FileReader();
     reader.onload = function(e) {
-        let preview = document.getElementById('preview');
         preview.src = e.target.result;
         preview.style.display = 'block';
-    }
+        if (empty) empty.style.display = 'none';
+    };
     reader.readAsDataURL(file);
 }
 
