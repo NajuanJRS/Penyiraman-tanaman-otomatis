@@ -37,7 +37,7 @@ class CaptureCameraImage extends Command
             return self::FAILURE;
         }
 
-        $cameraRtsp = config('services.camera.rtsp', env('CAMERA_RTSP'));
+        $cameraRtsp = config('services.camera.rtsp');
 
         if (! $cameraRtsp) {
             $this->error('CAMERA_RTSP belum dikonfigurasi');

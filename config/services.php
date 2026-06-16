@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'camera' => [
+    'rtsp' => env('CAMERA_RTSP'),
+    ],
+
 ];
