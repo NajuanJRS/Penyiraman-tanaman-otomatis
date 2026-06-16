@@ -10,20 +10,20 @@ function confirmMode(mode) {
         cancelButtonText: 'Batal'
     }).then((result) => {
         if (result.isConfirmed) {
-            if(mode == 'otomatis'){
+            if (mode == 'otomatis') {
                 document.getElementById('formOtomatis').submit();
             }
-            else if(mode == 'manual'){
+            else if (mode == 'manual') {
                 document.getElementById('formManual').submit();
             }
-            else if(mode == 'off'){
+            else if (mode == 'off') {
                 document.getElementById('formOff').submit();
             }
         }
     });
 }
 
-document.getElementById('siramForm').addEventListener('submit', function(e) {
+document.getElementById('siramForm').addEventListener('submit', function (e) {
     e.preventDefault();
     Swal.fire({
         title: 'Konfirmasi',
@@ -78,7 +78,7 @@ function confirmSaveKelembapan() {
 function previewImage(event) {
     let file = event.target.files[0];
     const preview = document.getElementById('preview');
-    const empty   = document.querySelector('.preview-empty');
+    const empty = document.querySelector('.preview-empty');
 
     if (!file) {
         preview.style.display = 'none';
@@ -88,7 +88,7 @@ function previewImage(event) {
     }
 
     let reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
         preview.src = e.target.result;
         preview.style.display = 'block';
         if (empty) empty.style.display = 'none';
@@ -114,7 +114,6 @@ function confirmDelete() {
     });
 }
 
-function showImage(src)
-{
+function showImage(src) {
     document.getElementById('modalImage').src = src;
 }

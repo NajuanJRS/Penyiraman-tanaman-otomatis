@@ -12,9 +12,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Percayai semua proxy (Nginx reverse proxy di VPS)
+        // agar asset() menghasilkan URL https:// yang benar
+        $middleware->trustProxies(at: '*');
+
         $middleware->alias([
             'checklogin' => \App\Http\Middleware\CheckLogin::class,
-            'apikey' => \App\Http\Middleware\ApiKeyMiddleware::class,
+            'apikey'     => \App\Http\Middleware\ApiKeyMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
