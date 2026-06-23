@@ -16,6 +16,7 @@ class Perkembangan extends Model
         'kelembapan_tanah',
         'kelembapan_udara',
         'suhu',
+        'gambar',
     ];
 
     public function prediksi()

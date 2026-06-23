@@ -2,129 +2,195 @@
 
 @section('content')
 
-    <div class="page-header">
-        <h3>Kontrol Penyiraman</h3>
-        <p>Pilih mode pompa dan atur batas kelembapan untuk keputusan penyiraman.</p>
+{{-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     Page Header
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• --}}
+<div class="mb-6">
+    <div class="flex items-center justify-between flex-wrap gap-3">
+        <div>
+            <h1 class="text-2xl font-semibold text-foreground tracking-tight">Kontrol Penyiraman</h1>
+            <p class="text-sm text-muted-foreground mt-0.5">
+                Pilih mode pompa dan atur batas kelembapan untuk keputusan penyiraman.
+            </p>
+        </div>
+        {{-- Status pompa saat ini --}}
+        @php
+            $pumpOn = ($mode_otomatis == 1 || $mode_manual == 1);
+        @endphp
+        <x-ui.badge :tone="$pumpOn ? 'success' : 'neutral'" variant="soft" size="lg" class="gap-1.5">
+            <span class="relative flex size-2">
+                @if($pumpOn)
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
+                @endif
+                <span class="relative inline-flex rounded-full size-2 {{ $pumpOn ? 'bg-success' : 'bg-muted-foreground' }}"></span>
+            </span>
+            {{ $pumpOn ? 'Pompa Aktif' : 'Pompa Mati' }}
+        </x-ui.badge>
+    </div>
+</div>
+
+{{-- Hidden forms --}}
+<form id="formOtomatis" method="POST" action="{{ route('kontrol.otomatis') }}">@csrf</form>
+<form id="formManual"   method="POST" action="{{ route('kontrol.manual') }}">@csrf</form>
+<form id="formOff"      method="POST" action="{{ route('kontrol.off') }}">@csrf</form>
+
+{{-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     Mode Cards â€” 2 kolom
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• --}}
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+
+    {{-- Mode Otomatis --}}
+    <x-ui.card variant="sectioned" class="{{ $mode_otomatis == 1 ? 'ring-2 ring-primary/40' : '' }}">
+        <x-ui.card-header>
+            <div class="flex items-center justify-between">
+                {{-- Icon --}}
+                <div class="size-11 rounded-xl flex items-center justify-center
+                    {{ $mode_otomatis == 1 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground' }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/>
+                        <line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>
+                    </svg>
+                </div>
+                {{-- Badge status --}}
+                <x-ui.badge :tone="$mode_otomatis == 1 ? 'success' : 'neutral'" variant="soft" size="sm">
+                    {{ $mode_otomatis == 1 ? 'Aktif' : 'Nonaktif' }}
+                </x-ui.badge>
+            </div>
+        </x-ui.card-header>
+
+        <x-ui.card-content class="pt-1">
+            <x-ui.card-title class="mb-1">Mode Otomatis</x-ui.card-title>
+            <x-ui.card-description>
+                Pompa menyiram secara otomatis berdasarkan pembacaan sensor kelembapan.
+            </x-ui.card-description>
+        </x-ui.card-content>
+
+        <x-ui.card-footer class="pt-4 border-t">
+            @if ($mode_otomatis == 1)
+                <x-ui.button variant="outline" class="w-full text-destructive border-destructive/30 hover:bg-destructive/5 gap-2"
+                    onclick="confirmMode('off')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/><rect x="9" y="9" width="6" height="6" rx="1"/>
+                    </svg>
+                    Matikan Mode Otomatis
+                </x-ui.button>
+            @else
+                <x-ui.button class="w-full gap-2" onclick="confirmMode('otomatis')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                    Aktifkan Mode Otomatis
+                </x-ui.button>
+            @endif
+        </x-ui.card-footer>
+    </x-ui.card>
+
+    {{-- Mode Manual --}}
+    <x-ui.card variant="sectioned" class="{{ $mode_manual == 1 ? 'ring-2 ring-info/40' : '' }}">
+        <x-ui.card-header>
+            <div class="flex items-center justify-between">
+                {{-- Icon --}}
+                <div class="size-11 rounded-xl flex items-center justify-center
+                    {{ $mode_manual == 1 ? 'bg-info text-info-foreground' : 'bg-muted text-muted-foreground' }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/>
+                        <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
+                    </svg>
+                </div>
+                {{-- Badge status --}}
+                <x-ui.badge :tone="$mode_manual == 1 ? 'info' : 'neutral'" variant="soft" size="sm">
+                    {{ $mode_manual == 1 ? 'Aktif' : 'Nonaktif' }}
+                </x-ui.badge>
+            </div>
+        </x-ui.card-header>
+
+        <x-ui.card-content class="pt-1">
+            <x-ui.card-title class="mb-1">Mode Manual</x-ui.card-title>
+            <x-ui.card-description>
+                Pompa dijalankan secara langsung tanpa intervensi sistem otomatis.
+            </x-ui.card-description>
+        </x-ui.card-content>
+
+        <x-ui.card-footer class="pt-4 border-t">
+            @if ($mode_manual == 1)
+                <x-ui.button variant="outline" class="w-full text-destructive border-destructive/30 hover:bg-destructive/5 gap-2"
+                    onclick="confirmMode('off')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/><rect x="9" y="9" width="6" height="6" rx="1"/>
+                    </svg>
+                    Matikan Mode Manual
+                </x-ui.button>
+            @else
+                <x-ui.button color="#2577a0" class="w-full gap-2" onclick="confirmMode('manual')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                    Aktifkan Mode Manual
+                </x-ui.button>
+            @endif
+        </x-ui.card-footer>
+    </x-ui.card>
+
+</div>
+
+{{-- Batas Kelembapan --}}
+<div class="bg-card rounded-xl border shadow-sm overflow-hidden">
+
+    {{-- Header --}}
+    <div class="flex items-center gap-3 px-4 py-3 border-b">
+        <div class="size-8 rounded-lg flex items-center justify-center bg-warning/10 text-warning shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2C6.48 2 2 9 2 13a10 10 0 0020 0C22 9 17.52 2 12 2z"/>
+            </svg>
+        </div>
+        <div>
+            <p class="text-sm font-semibold text-foreground leading-tight">Batas Kelembapan</p>
+            <p class="text-xs text-muted-foreground">Sistem merekomendasikan penyiraman jika kelembapan tanah berada di bawah nilai ini.</p>
+        </div>
     </div>
 
-    @if (session('success'))
-        <script>
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'success',
-                title: '{{ session('success') }}',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true
-            });
-        </script>
-    @endif
-
-    {{-- Hidden forms --}}
-    <form id="formOtomatis" method="POST" action="{{ route('kontrol.otomatis') }}">@csrf</form>
-    <form id="formManual"   method="POST" action="{{ route('kontrol.manual') }}">@csrf</form>
-    <form id="formOff"      method="POST" action="{{ route('kontrol.off') }}">@csrf</form>
-
-    {{-- Mode cards --}}
-    <div class="row g-3 mb-4">
-
-        {{-- Otomatis --}}
-        <div class="col-md-6">
-            <div class="mode-card {{ $mode_otomatis == 1 ? 'mode-card--active' : '' }}">
-                <div class="mode-card__head">
-                    <div class="mode-card__icon mode-card__icon--green">
-                        <i class="bi bi-cpu"></i>
-                    </div>
-                    <span class="mode-badge {{ $mode_otomatis == 1 ? 'mode-badge--on' : 'mode-badge--off' }}">
-                        {{ $mode_otomatis == 1 ? 'Aktif' : 'Nonaktif' }}
-                    </span>
-                </div>
-
-                <h4 class="mode-card__title">Mode Otomatis</h4>
-                <p class="mode-card__desc">Pompa menyiram secara otomatis berdasarkan pembacaan sensor.</p>
-
-                <div class="mode-card__footer">
-                    @if ($mode_otomatis == 1)
-                        <button class="btn btn-soft-danger" onclick="confirmMode('off')">
-                            <i class="bi bi-stop-circle"></i> Matikan
-                        </button>
-                    @else
-                        <button class="btn btn-garden" onclick="confirmMode('otomatis')">
-                            <i class="bi bi-play-circle"></i> Aktifkan
-                        </button>
-                    @endif
-                </div>
-            </div>
-        </div>
-
-        {{-- Manual --}}
-        <div class="col-md-6">
-            <div class="mode-card {{ $mode_manual == 1 ? 'mode-card--active' : '' }}">
-                <div class="mode-card__head">
-                    <div class="mode-card__icon mode-card__icon--blue">
-                        <i class="bi bi-hand-index-thumb"></i>
-                    </div>
-                    <span class="mode-badge {{ $mode_manual == 1 ? 'mode-badge--on' : 'mode-badge--off' }}">
-                        {{ $mode_manual == 1 ? 'Aktif' : 'Nonaktif' }}
-                    </span>
-                </div>
-
-                <h4 class="mode-card__title">Mode Manual</h4>
-                <p class="mode-card__desc">Pompa dijalankan secara langsung tanpa intervensi otomatis.</p>
-
-                <div class="mode-card__footer">
-                    @if ($mode_manual == 1)
-                        <button class="btn btn-soft-danger" onclick="confirmMode('off')">
-                            <i class="bi bi-stop-circle"></i> Matikan
-                        </button>
-                    @else
-                        <button class="btn btn-sky" onclick="confirmMode('manual')">
-                            <i class="bi bi-hand-index-thumb"></i> Aktifkan
-                        </button>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- Threshold setting --}}
-    <div class="threshold-panel">
-        <div class="threshold-panel__head">
-            <h5>Batas Kelembapan</h5>
-            <p>Sistem akan merekomendasikan penyiraman jika kelembapan tanah berada di bawah nilai ini.</p>
-        </div>
-
+    {{-- Body --}}
+    <div class="px-4 py-4">
         <form id="thresholdForm" action="{{ route('kontrol.threshold') }}" method="POST">
             @csrf
-            <div class="threshold-panel__body">
-                <div class="threshold-input-wrap">
-                    <label for="batas_kelembapan" class="threshold-label">
-                        Siram jika kelembapan tanah ≤
-                    </label>
-                    <div class="threshold-input-row">
-                        <input
+
+            {{-- Responsive input row - stacks label on mobile --}}
+            <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
+                <label for="batas_kelembapan" class="text-sm font-medium text-foreground">
+                    Siram jika kelembapan tanah &le;
+                </label>
+                <div class="flex items-center gap-2 justify-center sm:justify-start">
+                    <div class="w-20 shrink-0">
+                        <x-ui.input
                             type="number"
                             id="batas_kelembapan"
                             name="batas_kelembapan"
-                            class="form-control"
-                            min="0" max="100"
-                            value="{{ $batas_kelembapan }}"
-                        >
-                        <span class="threshold-unit">%</span>
-                        <button type="button" class="btn btn-garden" onclick="confirmSaveKelembapan()">
-                            <i class="bi bi-check2"></i>
-                            Simpan
-                        </button>
+                            min="0"
+                            max="100"
+                            size="sm"
+                            class="text-center font-semibold tabular-nums"
+                            :value="$batas_kelembapan"
+                        />
                     </div>
-                </div>
-
-                <div class="threshold-note">
-                    <i class="bi bi-info-circle"></i>
-                    <span>Nilai saat ini: <strong>{{ $batas_kelembapan }}%</strong>. Sistem merekomendasikan <strong>Siram</strong> jika kelembapan tanah ≤ nilai tersebut.</span>
+                    <span class="text-sm font-medium text-muted-foreground">%</span>
+                    <x-ui.button type="button" size="sm" onclick="confirmSaveKelembapan()" class="gap-1.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+                        </svg>
+                        Simpan
+                    </x-ui.button>
                 </div>
             </div>
+
+            {{-- Info note --}}
+            <div class="flex items-start gap-2 rounded-lg px-3 py-2.5 text-xs" style="background:oklch(0.97 0.03 85 / 0.5); color:oklch(0.48 0.11 65); border:1px solid oklch(0.48 0.11 65 / 0.2);">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5 shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                <span>Nilai saat ini <strong>{{ $batas_kelembapan }}%</strong>. Sistem merekomendasikan <strong>Siram</strong> jika kelembapan tanah &le; nilai tersebut. Perubahan berlaku pada pembacaan sensor berikutnya.</span>
+            </div>
+
         </form>
     </div>
-
+</div>
 @endsection

@@ -20,7 +20,7 @@ class CheckLogin
             return redirect('/login');
         }
 
-        $timeout = 10 * 60; // 10 menit
+        $timeout = 24 * 60 * 60; // 24 jam
 
         // Cek last activity
         if (Session::has('last_activity')) {

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 *, *::before, *::after {
     box-sizing: border-box;
@@ -10,200 +10,415 @@ html, body {
     height: 100%;
 }
 
-body {
+body.lg-page {
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 14px;
     line-height: 1.5;
-    color: #111;
-    background: #f2f2f0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 20px;
     -webkit-font-smoothing: antialiased;
+    background: #f4f4f2;
+    min-height: 100vh;
+    display: flex;
+    align-items: stretch;
 }
 
 input::-ms-reveal,
 input::-ms-clear { display: none; }
 
-/* ── Card ─────────────────────────────── */
+/* ────────────────────────────────────────
+   Layout Wrapper
+──────────────────────────────────────── */
 
-.login-box {
+.lg-wrap {
+    display: flex;
     width: 100%;
-    max-width: 380px;
-    background: #fff;
-    border: 1px solid #e4e4e4;
-    border-radius: 12px;
-    padding: 36px 32px;
+    min-height: 100vh;
 }
 
-/* ── Logo & Brand ─────────────────────── */
+/* ────────────────────────────────────────
+   Left Brand Panel
+──────────────────────────────────────── */
 
-.login-brand {
+.lg-brand-panel {
+    flex: 0 0 45%;
+    background: linear-gradient(160deg, #1b3a2d 0%, #142d22 55%, #0e2118 100%);
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 28px;
-}
-
-.login-logo {
-    width: 34px;
-    height: 34px;
-    border-radius: 8px;
+    justify-content: center;
+    padding: 48px 40px;
+    position: relative;
     overflow: hidden;
-    border: 1px solid #e4e4e4;
-    flex-shrink: 0;
 }
 
-.login-logo img {
+/* Decorative circles */
+.lg-deco {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+}
+
+.lg-deco--1 {
+    width: 350px;
+    height: 350px;
+    top: -80px;
+    right: -80px;
+}
+
+.lg-deco--2 {
+    width: 240px;
+    height: 240px;
+    bottom: -60px;
+    left: -60px;
+}
+
+.lg-deco--3 {
+    width: 140px;
+    height: 140px;
+    bottom: 120px;
+    right: 30px;
+    background: rgba(134, 239, 172, 0.06);
+}
+
+.lg-brand-inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+/* Logo */
+.lg-logo-wrap {
+    width: 88px;
+    height: 88px;
+    border-radius: 22px;
+    overflow: hidden;
+    margin: 0 auto 24px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35), 0 0 0 3px rgba(255,255,255,0.12);
+}
+
+.lg-logo-wrap img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
 }
 
-.login-brand-name {
-    font-size: 15px;
-    font-weight: 700;
-    color: #111;
-    letter-spacing: -0.01em;
+.lg-app-name {
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
 }
 
-/* ── Heading ──────────────────────────── */
+.lg-app-tagline {
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.65;
+    margin-bottom: 40px;
+}
 
-.login-title {
-    font-size: 1.35rem;
+/* Feature pills */
+.lg-features {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: left;
+}
+
+.lg-feature {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 10px 14px;
+}
+
+.lg-feature-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: rgba(134, 239, 172, 0.12);
+    border-radius: 7px;
+    color: #86efac;
+    flex-shrink: 0;
+}
+
+/* ────────────────────────────────────────
+   Right Form Panel
+──────────────────────────────────────── */
+
+.lg-form-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 32px;
+    background: #fafaf8;
+    background-image: radial-gradient(circle, #e5e5e3 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+.lg-form-inner {
+    width: 100%;
+    max-width: 400px;
+    background: #fff;
+    border: 1px solid #e8e8e6;
+    border-radius: 16px;
+    padding: 36px 32px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+}
+
+/* Mobile logo - hidden on desktop */
+.lg-mobile-brand {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 32px;
+}
+
+.lg-mobile-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    overflow: hidden;
+    border: 1px solid #e4e4e2;
+}
+
+.lg-mobile-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.lg-mobile-brand span {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+}
+
+/* Form header */
+.lg-form-header {
+    margin-bottom: 28px;
+}
+
+.lg-form-title {
+    font-size: 22px;
     font-weight: 700;
     color: #111;
     letter-spacing: -0.02em;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
 }
 
-.login-subtitle {
+.lg-form-subtitle {
     font-size: 13.5px;
     color: #888;
-    margin-bottom: 24px;
 }
 
-/* ── Error ────────────────────────────── */
-
-.login-error {
+/* Alert */
+.lg-alert {
     display: flex;
     align-items: center;
     gap: 8px;
     font-size: 13px;
     font-weight: 500;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 20px;
+}
+
+.lg-alert--error {
     color: #b91c1c;
     background: #fef2f2;
     border: 1px solid #fecaca;
-    border-radius: 8px;
-    padding: 10px 12px;
-    margin-bottom: 18px;
 }
 
-/* ── Form ─────────────────────────────── */
+/* Form */
+.lg-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
 
-.field-label {
+.lg-field {
+    margin-bottom: 20px;
+}
+
+.lg-label {
     display: block;
     font-size: 13px;
     font-weight: 600;
     color: #333;
-    margin-bottom: 6px;
+    margin-bottom: 7px;
 }
 
-.field-wrap {
+.lg-input-wrap {
     display: flex;
     align-items: center;
-    border: 1px solid #d4d4d4;
-    border-radius: 8px;
     background: #fff;
-    transition: border-color 0.15s, box-shadow 0.15s;
-    margin-bottom: 16px;
+    border: 1px solid #d8d8d6;
+    border-radius: 10px;
     overflow: hidden;
+    transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.field-wrap:focus-within {
+.lg-input-wrap:focus-within {
     border-color: #2d6a4f;
     box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.1);
 }
 
-.field-icon {
-    width: 40px;
+.lg-input-icon {
+    width: 42px;
     display: grid;
     place-items: center;
     color: #bbb;
-    font-size: 14px;
     flex-shrink: 0;
 }
 
-.field-wrap input {
+.lg-input {
     flex: 1;
     border: none;
     background: transparent;
     font-family: inherit;
     font-size: 14px;
     color: #111;
-    padding: 11px 0;
+    padding: 11px 4px;
     outline: none;
     min-width: 0;
 }
 
-.field-wrap input::placeholder {
+.lg-input::placeholder {
     color: #bbb;
 }
 
-.toggle-pw {
-    width: 40px;
+.lg-toggle-pw {
+    width: 42px;
     display: grid;
     place-items: center;
     background: none;
     border: none;
     color: #bbb;
-    font-size: 14px;
     cursor: pointer;
     padding: 0;
     flex-shrink: 0;
     transition: color 0.15s;
 }
 
-.toggle-pw:hover { color: #555; }
+.lg-toggle-pw:hover { color: #555; }
 
-/* ── Submit ───────────────────────────── */
-
-.btn-submit {
+/* Submit button */
+.lg-btn-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     width: 100%;
-    padding: 11px;
+    padding: 12px 16px;
     border: none;
-    border-radius: 8px;
-    background: #1e3a2f;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #1b3a2d 0%, #2d5a3d 100%);
     color: #fff;
     font-family: inherit;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     letter-spacing: 0.01em;
-    transition: background 0.15s;
+    transition: opacity 0.15s, transform 0.12s, box-shadow 0.15s;
+    box-shadow: 0 4px 16px rgba(27, 58, 45, 0.35);
     margin-top: 4px;
 }
 
-.btn-submit:hover { background: #163026; }
-
-/* ── Footer note ──────────────────────── */
-
-.login-note {
-    margin-top: 20px;
-    font-size: 12.5px;
-    color: #aaa;
-    text-align: center;
-    line-height: 1.55;
+.lg-btn-submit:hover {
+    opacity: 0.92;
+    box-shadow: 0 6px 20px rgba(27, 58, 45, 0.45);
+    transform: translateY(-1px);
 }
 
-/* ── Responsive ───────────────────────── */
+.lg-btn-submit:active {
+    transform: translateY(0);
+    opacity: 1;
+}
 
-@media (max-width: 440px) {
-    .login-box {
-        padding: 28px 22px;
-        border-radius: 10px;
+/* Footer note */
+.lg-footer-note {
+    margin-top: 32px;
+    font-size: 12px;
+    color: #bbb;
+    text-align: center;
+}
+
+/* ────────────────────────────────────────
+   Responsive — Mobile
+──────────────────────────────────────── */
+
+@media (max-width: 768px) {
+    .lg-wrap {
+        flex-direction: column;
+    }
+
+    .lg-brand-panel {
+        flex: none;
+        padding: 32px 24px;
+    }
+
+    .lg-brand-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .lg-logo-wrap {
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
+        margin-bottom: 14px;
+    }
+
+    .lg-app-name {
+        font-size: 20px;
+        margin-bottom: 6px;
+    }
+
+    .lg-app-tagline {
+        font-size: 12.5px;
+        margin-bottom: 20px;
+    }
+
+    .lg-features {
+        width: 100%;
+        max-width: 340px;
+    }
+
+    .lg-feature {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+
+    .lg-form-panel {
+        padding: 32px 20px;
+        align-items: flex-start;
+    }
+
+    .lg-mobile-brand {
+        display: none; /* hidden since brand panel is visible above */
+    }
+
+    .lg-form-inner {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .lg-brand-panel {
+        padding: 24px 16px;
+    }
+
+    .lg-features {
+        display: none; /* hide features on very small screens */
     }
 }
