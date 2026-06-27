@@ -18,6 +18,13 @@ use Kreait\Firebase\Messaging\AndroidConfig;
 
 class PerkembanganController extends Controller
 {
+    private FirebaseNotificationService $firebase;
+
+    public function __construct(FirebaseNotificationService $firebase)
+    {
+        $this->firebase = $firebase;
+    }
+
     public function index()
     {
         $perkembangan = Perkembangan::all();
@@ -33,6 +40,7 @@ class PerkembanganController extends Controller
             'kelembapan_tanah' => 'required|numeric|max:255',
             'kelembapan_udara' => 'required|numeric|max:255',
             'suhu' => 'required|numeric|max:255',
+            'decision' => 'required|in:Siram,Tidak Siram',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
         ], [
             'kelembapan_tanah.required' => 'Kelembapan tanah harus diisi',
@@ -41,12 +49,13 @@ class PerkembanganController extends Controller
             'kelembapan_udara.numeric' => 'Kelembapan udara harus berupa angka',
             'suhu.required' => 'Suhu harus diisi',
             'suhu.numeric' => 'Suhu harus berupa angka',
+            'decision.required' => 'Keputusan harus diisi',
+            'decision.in' => 'Keputusan harus bernilai Siram atau Tidak Siram',
             'gambar.image' => 'File harus berupa gambar',
             'gambar.mimes' => 'Format gambar harus jpeg, png, jpg, atau gif',
             'gambar.max' => 'Ukuran gambar maksimal 10MB',
         ]);
 
-        // JIKA VALIDASI GAGAL
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
@@ -56,101 +65,71 @@ class PerkembanganController extends Controller
         }
 
         try {
-        $gambarPath = null;
-        if ($request->hasFile('gambar')) {
-            $image = Image::read(
-                $request->file('gambar')
-            );
+            $gambarPath = null;
+            if ($request->hasFile('gambar')) {
+                $image = Image::read($request->file('gambar'));
+                $image->scale(width: 1600);
 
-            $image->scale(
-                width: 1600
-            );
+                $filename = Str::uuid() . '.jpg';
+                $path = storage_path('app/public/perkembangan/' . $filename);
 
-            $filename =
-                Str::uuid() . '.jpg';
-            $path =
-                storage_path(
-                    'app/public/perkembangan/' . $filename
-                );
+                $image->toJpeg(quality: 85)->save($path);
 
-            $image->toJpeg(
-                quality: 85
-            )->save($path);
+                $gambarPath = 'perkembangan/' . $filename;
+            }
 
-            $gambarPath =
-                'perkembangan/' . $filename;
-        }
+            $perkembangan = Perkembangan::create([
+                'waktu' => now(),
+                'kelembapan_tanah' => $request->kelembapan_tanah,
+                'kelembapan_udara' => $request->kelembapan_udara,
+                'suhu' => $request->suhu,
+                'gambar' => $gambarPath,
+            ]);
 
-        $perkembangan = Perkembangan::create([
-            'waktu' => now(),
-            'kelembapan_tanah' => $request->kelembapan_tanah,
-            'kelembapan_udara' => $request->kelembapan_udara,
-            'suhu' => $request->suhu,
-            'gambar' => $gambarPath,
-        ]);
+            // Keputusan diambil dari request (hasil perhitungan FastAPI)
+            $decision = $request->decision;
 
-        $decision = $this->hitungKeputusan(
-                $request->kelembapan_tanah,
-                $request->kelembapan_udara,
-                $request->suhu
-            );
+            $lastPrediksi = Prediksi::orderByDesc('id_prediksi')->first();
 
-        $lastPrediksi = Prediksi::orderByDesc(
-            'id_prediksi'
-        )->first();
+            Prediksi::create([
+                'id_perkembangan' => $perkembangan->id_perkembangan,
+                'decision' => $decision
+            ]);
 
-        Prediksi::create([
-            'id_perkembangan' => $perkembangan->id_perkembangan,
-            'decision' => $decision
-        ]);
+            // Kirim notifikasi hanya saat status BERUBAH menjadi "Siram"
+            if (
+                $decision === 'Siram' &&
+                (!$lastPrediksi || $lastPrediksi->decision !== 'Siram')
+            ) {
+                $tokens = FcmToken::all();
 
-        if (
-            $decision === 'Siram' &&
-            (
-                !$lastPrediksi ||
-                $lastPrediksi->decision !== 'Siram'
-            )
-        ) {
-
-            $tokens = FcmToken::all();
-
-            foreach ($tokens as $token) {
-
-                try {
-
-                    $this->firebase->send(
-                        $token->token,
-                        'Caba.IoT',
-                        'Tanaman perlu disiram. Periksa status penyiraman.'
-                    );
-
-                } catch (\Exception $e) {
-
-                    Log::warning(
-                        'Token tidak valid: ' .
-                        $token->token
-                    );
-
-                    $token->delete();
+                foreach ($tokens as $token) {
+                    try {
+                        $this->firebase->send(
+                            $token->token,
+                            'Caba.IoT',
+                            'Tanaman perlu disiram. Periksa status penyiraman.'
+                        );
+                    } catch (\Exception $e) {
+                        Log::warning('Token tidak valid: ' . $token->token);
+                        $token->delete();
+                    }
                 }
             }
-        }
 
-        return response()->json([
-            'message' => 'Data perkembangan berhasil disimpan',
-            'data' => $perkembangan,
-            'decision' => $decision
-        ], 201);
+            return response()->json([
+                'message' => 'Data perkembangan berhasil disimpan',
+                'data' => $perkembangan,
+                'decision' => $decision
+            ], 201);
 
         } catch (\Exception $e) {
-
             return response()->json([
                 'status' => false,
                 'message' => 'Terjadi kesalahan pada server',
                 'error' => $e->getMessage()
             ], 500);
         }
-
     }
 
     public function updateGambar(Request $request, $id)
@@ -167,7 +146,6 @@ class PerkembanganController extends Controller
         }
 
         try {
-
             $perkembangan = Perkembangan::findOrFail($id);
 
             // Hapus gambar lama
@@ -179,29 +157,15 @@ class PerkembanganController extends Controller
             }
 
             // Kompres gambar baru
-            $image = Image::read(
-                $request->file('gambar')
-            );
-
-            // Resize jika terlalu besar
-            $image->scale(
-                width: 1600
-            );
+            $image = Image::read($request->file('gambar'));
+            $image->scale(width: 1600);
 
             $filename = Str::uuid() . '.jpg';
+            $path = storage_path('app/public/perkembangan/' . $filename);
 
-            $path = storage_path(
-                'app/public/perkembangan/' . $filename
-            );
+            $image->toJpeg(quality: 85)->save($path);
 
-            // Simpan sebagai JPG terkompresi
-            $image->toJpeg(
-                quality: 85
-            )->save($path);
-
-            $path = 'perkembangan/' . $filename;
-
-            $perkembangan->gambar = $path;
+            $perkembangan->gambar = 'perkembangan/' . $filename;
             $perkembangan->save();
 
             return response()->json([
@@ -211,27 +175,16 @@ class PerkembanganController extends Controller
             ]);
 
         } catch (\Exception $e) {
-
             return response()->json([
                 'status' => false,
                 'message' => $e->getMessage()
             ], 500);
-
         }
-    }
-
-    private FirebaseNotificationService $firebase;
-
-    public function __construct(
-        FirebaseNotificationService $firebase
-    ){
-        $this->firebase = $firebase;
     }
 
     public function hapusGambar($id)
     {
         try {
-
             $perkembangan = Perkembangan::findOrFail($id);
 
             if (
@@ -250,45 +203,11 @@ class PerkembanganController extends Controller
             ]);
 
         } catch (\Exception $e) {
-
             return response()->json([
                 'status' => false,
                 'message' => $e->getMessage()
             ], 500);
-
         }
-    }
-
-    private function hitungKeputusan($tanah, $udara, $suhu)
-    {
-        $jam = (int) now()->format('H');
-
-        if ($jam >= 11 && $jam < 15) {
-            $kategoriWaktu = 'siang';
-        } elseif ($jam >= 6 && $jam < 11) {
-            $kategoriWaktu = 'pagi';
-        } elseif ($jam >= 15 && $jam < 18) {
-            $kategoriWaktu = 'sore';
-        } else {
-            $kategoriWaktu = 'malam';
-        }
-
-        // Tanah sangat kering
-        if ($tanah <= 60) {
-            return 'Siram';
-        }
-
-        // Tanah agak kering, panas, dan siang hari
-        if ($tanah <= 65 && $suhu >= 30 && $kategoriWaktu === 'siang') {
-            return 'Siram';
-        }
-
-        // Tanah agak kering dan udara kering
-        if ($tanah <= 65 && $udara <= 60) {
-            return 'Siram';
-        }
-
-        return 'Tidak Siram';
     }
 
 }

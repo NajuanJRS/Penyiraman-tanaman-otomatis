@@ -24,7 +24,6 @@ class KontrolController extends Controller
             'status' => true,
             'mode_manual' => $kontrol->mode_manual,
             'mode_otomatis' => $kontrol->mode_otomatis,
-            'batas_kelembapan' => $kontrol->batas_kelembapan,
         ]);
     }
 
@@ -40,15 +39,11 @@ class KontrolController extends Controller
         $validator = Validator::make($request->all(), [
             'mode_otomatis' => 'required|boolean',
             'mode_manual' => 'required|boolean',
-            'batas_kelembapan' => 'nullable|numeric|min:0|max:100',
         ], [
             'mode_otomatis.required' => 'Mode otomatis harus diisi',
             'mode_otomatis.boolean' => 'Mode otomatis harus berupa boolean',
             'mode_manual.required' => 'Mode manual harus diisi',
             'mode_manual.boolean' => 'Mode manual harus berupa boolean',
-            'batas_kelembapan.numeric' => 'Batas kelembapan harus berupa angka',
-            'batas_kelembapan.min' => 'Batas kelembapan minimal 0',
-            'batas_kelembapan.max' => 'Batas kelembapan maksimal 100',
         ]);
 
         if ($validator->fails()) {
@@ -60,7 +55,7 @@ class KontrolController extends Controller
         }
 
     try {
-        $kontroller->update($request->only(['mode_otomatis', 'mode_manual', 'batas_kelembapan']));
+        $kontroller->update($request->only(['mode_otomatis', 'mode_manual']));
 
         return response()->json([
             'message' => 'Kontrol berhasil diperbarui',
