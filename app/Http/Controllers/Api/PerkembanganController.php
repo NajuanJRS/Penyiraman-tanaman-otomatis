@@ -261,11 +261,30 @@ class PerkembanganController extends Controller
 
     private function hitungKeputusan($tanah, $udara, $suhu)
     {
-        $kontrol = Kontroller::first();
+        $jam = (int) now()->format('H');
 
-        $batas = $kontrol->batas_kelembapan ?? 40;
+        if ($jam >= 11 && $jam < 15) {
+            $kategoriWaktu = 'siang';
+        } elseif ($jam >= 6 && $jam < 11) {
+            $kategoriWaktu = 'pagi';
+        } elseif ($jam >= 15 && $jam < 18) {
+            $kategoriWaktu = 'sore';
+        } else {
+            $kategoriWaktu = 'malam';
+        }
 
-        if ($tanah <= $batas) {
+        // Tanah sangat kering
+        if ($tanah <= 60) {
+            return 'Siram';
+        }
+
+        // Tanah agak kering, panas, dan siang hari
+        if ($tanah <= 65 && $suhu >= 30 && $kategoriWaktu === 'siang') {
+            return 'Siram';
+        }
+
+        // Tanah agak kering dan udara kering
+        if ($tanah <= 65 && $udara <= 60) {
             return 'Siram';
         }
 
