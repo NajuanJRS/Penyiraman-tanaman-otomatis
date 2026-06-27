@@ -14,7 +14,6 @@ class KontrollerController extends Controller
         return view('kontrol', [
             'mode_otomatis' => $kontrol->mode_otomatis ?? 1,
             'mode_manual' => $kontrol->mode_manual ?? 0,
-            'batas_kelembapan' => $kontrol->batas_kelembapan ?? 40,
         ]);
     }
 
@@ -55,26 +54,5 @@ class KontrollerController extends Controller
         );
 
         return redirect('kontrol')->with('success', 'Semua Mode Dimatikan');
-    }
-
-    public function updateThreshold(Request $request)
-    {
-        $request->validate([
-            'batas_kelembapan' =>
-                'required|integer|min:0|max:100'
-        ]);
-
-        Kontroller::updateOrCreate(
-            ['id_kontroller' => 1],
-            [
-                'batas_kelembapan' =>
-                    $request->batas_kelembapan
-            ]
-        );
-
-        return back()->with(
-            'success',
-            'Batas kelembapan berhasil diperbarui'
-        );
     }
 }

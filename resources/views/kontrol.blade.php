@@ -2,9 +2,6 @@
 
 @section('content')
 
-{{-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-     Page Header
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• --}}
 <div class="mb-6">
     <div class="flex items-center justify-between flex-wrap gap-3">
         <div>
@@ -131,66 +128,5 @@
         </x-ui.card-footer>
     </x-ui.card>
 
-</div>
-
-{{-- Batas Kelembapan --}}
-<div class="bg-card rounded-xl border shadow-sm overflow-hidden">
-
-    {{-- Header --}}
-    <div class="flex items-center gap-3 px-4 py-3 border-b">
-        <div class="size-8 rounded-lg flex items-center justify-center bg-warning/10 text-warning shrink-0">
-            <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2C6.48 2 2 9 2 13a10 10 0 0020 0C22 9 17.52 2 12 2z"/>
-            </svg>
-        </div>
-        <div>
-            <p class="text-sm font-semibold text-foreground leading-tight">Batas Kelembapan</p>
-            <p class="text-xs text-muted-foreground">Sistem merekomendasikan penyiraman jika kelembapan tanah berada di bawah nilai ini.</p>
-        </div>
-    </div>
-
-    {{-- Body --}}
-    <div class="px-4 py-4">
-        <form id="thresholdForm" action="{{ route('kontrol.threshold') }}" method="POST">
-            @csrf
-
-            {{-- Responsive input row - stacks label on mobile --}}
-            <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
-                <label for="batas_kelembapan" class="text-sm font-medium text-foreground">
-                    Siram jika kelembapan tanah &le;
-                </label>
-                <div class="flex items-center gap-2 justify-center sm:justify-start">
-                    <div class="w-20 shrink-0">
-                        <x-ui.input
-                            type="number"
-                            id="batas_kelembapan"
-                            name="batas_kelembapan"
-                            min="0"
-                            max="100"
-                            size="sm"
-                            class="text-center font-semibold tabular-nums"
-                            :value="$batas_kelembapan"
-                        />
-                    </div>
-                    <span class="text-sm font-medium text-muted-foreground">%</span>
-                    <x-ui.button type="button" size="sm" onclick="confirmSaveKelembapan()" class="gap-1.5">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
-                        </svg>
-                        Simpan
-                    </x-ui.button>
-                </div>
-            </div>
-
-            {{-- Info note --}}
-            <div class="flex items-start gap-2 rounded-lg px-3 py-2.5 text-xs" style="background:oklch(0.97 0.03 85 / 0.5); color:oklch(0.48 0.11 65); border:1px solid oklch(0.48 0.11 65 / 0.2);">
-                <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5 shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-                </svg>
-                <span>Nilai saat ini <strong>{{ $batas_kelembapan }}%</strong>. Sistem merekomendasikan <strong>Siram</strong> jika kelembapan tanah &le; nilai tersebut. Perubahan berlaku pada pembacaan sensor berikutnya.</span>
-            </div>
-
-        </form>
-    </div>
 </div>
 @endsection
