@@ -13,7 +13,7 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        $defaultPassword = 'Projecta!';
+        $defaultPassword = 'Projecta@';
 
         if ($request->password !== $defaultPassword) {
 
