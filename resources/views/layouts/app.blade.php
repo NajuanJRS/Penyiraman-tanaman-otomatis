@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Caba.IoT</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/jpeg" href="{{ asset('img/Logo_smart_garden.jpeg') }}">
+    <link rel="icon" type="image/jpeg" href="{{ asset('img/Logo_cabai.png') }}">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
@@ -59,7 +59,7 @@
         </svg>
     </button>
     <div class="sg-mobile-brand">
-        <img src="{{ asset('img/Logo_smart_garden.jpeg') }}" alt="Smart Garden" class="sg-mobile-logo">
+        <img src="{{ asset('img/Logo_cabai.png') }}" alt="Caba.IoT" class="sg-mobile-logo">
         <span class="sg-mobile-title">Caba.IoT</span>
     </div>
 </div>
@@ -69,7 +69,7 @@
     {{-- Brand --}}
     <div class="sg-sidebar-brand">
         <div class="sg-brand-logo">
-            <img src="{{ asset('img/Logo_smart_garden.jpeg') }}" alt="Smart Garden">
+            <img src="{{ asset('img/Logo_cabai.png') }}" alt="Caba.IoT">
         </div>
         <div class="sg-brand-text">
             <p class="sg-brand-title">Caba.IoT</p>

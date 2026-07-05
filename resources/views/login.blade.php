@@ -5,7 +5,7 @@
     <title>Login — Caba.IoT</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Login ke sistem monitoring tanaman Caba.IoT.">
-    <link rel="icon" type="image/jpeg" href="{{ asset('img/Logo_smart_garden.jpeg') }}">
+    <link rel="icon" type="image/jpeg" href="{{ asset('img/Logo_cabai.png') }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
@@ -25,7 +25,7 @@
 
             {{-- Logo --}}
             <div class="lg-logo-wrap">
-                <img src="{{ asset('img/Logo_smart_garden.jpeg') }}" alt="Smart Garden Logo">
+                <img src="{{ asset('img/Logo_cabai.png') }}" alt="Caba.IoT">
             </div>
 
             <h1 class="lg-app-name">Caba.IoT</h1>
@@ -62,7 +62,7 @@
             {{-- Mobile logo (hidden on desktop) --}}
             <div class="lg-mobile-brand">
                 <div class="lg-mobile-logo">
-                    <img src="{{ asset('img/Logo_smart_garden.jpeg') }}" alt="Logo">
+                    <img src="{{ asset('img/Logo_cabai.png') }}" alt="Caba.IoT">
                 </div>
                 <span>Caba.IoT</span>
             </div>
