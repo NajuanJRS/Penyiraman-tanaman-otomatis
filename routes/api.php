@@ -30,6 +30,8 @@ Route::get('/prediksi', [ApiPrediksiController::class, 'index']);
 
 Route::post('/prediksi', [ApiPrediksiController::class, 'store']);
 
+Route::get('/prediksi/terakhir', [ApiPrediksiController::class, 'terakhir']);
+
 Route::get('/kontrol', [ApiKontrolController::class, 'index']);
 
 Route::put('/kontrol/{id}', [ApiKontrolController::class, 'update']);

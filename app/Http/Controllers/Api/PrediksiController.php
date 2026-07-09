@@ -57,4 +57,21 @@ class PrediksiController extends Controller
             ], 500);
         }
     }
+
+    public function terakhir()
+    {
+        $prediksi = Prediksi::orderBy('id_prediksi', 'desc')->first();
+
+        if (!$prediksi) {
+            return response()->json([
+                'message' => 'Belum ada data prediksi',
+                'data' => null
+            ], 404);
+        }
+
+        return response()->json([
+            'message' => 'Data prediksi terakhir berhasil diambil',
+            'data' => $prediksi
+        ]);
+    }
 }
