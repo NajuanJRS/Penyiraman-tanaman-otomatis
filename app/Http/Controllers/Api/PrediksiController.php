@@ -11,7 +11,7 @@ class PrediksiController extends Controller
 {
     public function index()
     {
-        $prediksi = Prediksi::all();
+        $prediksi = Prediksi::orderBy('id_prediksi', 'desc')->first();
         return response()->json([
             'message' => 'Data prediksi berhasil diambil',
             'data' => $prediksi
