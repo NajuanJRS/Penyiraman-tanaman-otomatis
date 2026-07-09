@@ -20,12 +20,12 @@ class DashboardController extends Controller
         // Status pompa
         $status = ($latestPrediksi && $latestPrediksi->decision == 'Siram') ? 'Aktif' : 'Mati';
 
-        // 🔥 Ambil data TANPA GROUP (biar banyak titik)
+        // Ambil data TANPA GROUP (biar banyak titik)
         $grafik = Perkembangan::where('waktu', '>=', now()->subMonth())
             ->orderBy('waktu', 'asc')
             ->get();
 
-        // 🔥 Format data untuk Chart.js (x,y)
+        // Format data untuk Chart.js (x,y)
         $chartTanah = [];
         $chartUdara = [];
         $chartSuhu = [];
