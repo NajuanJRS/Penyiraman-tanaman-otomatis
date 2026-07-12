@@ -20,6 +20,11 @@ class DashboardController extends Controller
         // Status pompa
         $status = ($latestPrediksi && $latestPrediksi->decision == 'Siram') ? 'Aktif' : 'Mati';
 
+        // Cek konektivitas ESP32: aktif jika data terakhir diterima dalam 15 menit
+        $sistemAktif = $latestPerkembangan
+            && $latestPerkembangan->waktu
+            && Carbon::parse($latestPerkembangan->waktu)->greaterThanOrEqualTo(now()->subMinutes(15));
+
         // Ambil data TANPA GROUP (biar banyak titik)
         $grafik = Perkembangan::where('waktu', '>=', now()->subMonth())
             ->orderBy('waktu', 'asc')
@@ -65,6 +70,7 @@ class DashboardController extends Controller
             'chartSuhu' => $chartSuhu,
 
             'periode' => $periode,
+            'sistemAktif' => $sistemAktif,
         ]);
     }
 

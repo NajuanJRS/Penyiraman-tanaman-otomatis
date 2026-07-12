@@ -13,12 +13,14 @@
                 Kondisi sensor dan status sistem secara <span class="text-primary font-medium">real-time</span>.
             </p>
         </div>
-        <x-ui.badge tone="success" variant="soft" size="lg" class="gap-1.5">
+        <x-ui.badge :tone="$sistemAktif ? 'success' : 'neutral'" variant="soft" size="lg" class="gap-1.5">
             <span class="relative flex size-2">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
-                <span class="relative inline-flex rounded-full size-2 bg-success"></span>
+                @if($sistemAktif)
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
+                @endif
+                <span class="relative inline-flex rounded-full size-2 {{ $sistemAktif ? 'bg-success' : 'bg-muted-foreground' }}"></span>
             </span>
-            Sistem Aktif
+            {{ $sistemAktif ? 'Sistem Aktif' : 'Sistem Nonaktif' }}
         </x-ui.badge>
     </div>
 </div>

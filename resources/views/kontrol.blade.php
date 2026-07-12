@@ -10,19 +10,29 @@
                 Pilih mode pompa dan atur batas kelembapan untuk keputusan penyiraman.
             </p>
         </div>
-        {{-- Status pompa saat ini --}}
         @php
             $pumpOn = ($mode_otomatis == 1 || $mode_manual == 1);
         @endphp
-        <x-ui.badge :tone="$pumpOn ? 'success' : 'neutral'" variant="soft" size="lg" class="gap-1.5">
-            <span class="relative flex size-2">
-                @if($pumpOn)
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
-                @endif
-                <span class="relative inline-flex rounded-full size-2 {{ $pumpOn ? 'bg-success' : 'bg-muted-foreground' }}"></span>
-            </span>
-            {{ $pumpOn ? 'Pompa Aktif' : 'Pompa Mati' }}
-        </x-ui.badge>
+        <div class="flex items-center gap-2 flex-wrap">
+            <x-ui.badge :tone="$sistemAktif ? 'success' : 'neutral'" variant="soft" size="lg" class="gap-1.5">
+                <span class="relative flex size-2">
+                    @if($sistemAktif)
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
+                    @endif
+                    <span class="relative inline-flex rounded-full size-2 {{ $sistemAktif ? 'bg-success' : 'bg-muted-foreground' }}"></span>
+                </span>
+                {{ $sistemAktif ? 'Sistem Aktif' : 'Sistem Nonaktif' }}
+            </x-ui.badge>
+            <x-ui.badge :tone="$pumpOn ? 'success' : 'neutral'" variant="soft" size="lg" class="gap-1.5">
+                <span class="relative flex size-2">
+                    @if($pumpOn)
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
+                    @endif
+                    <span class="relative inline-flex rounded-full size-2 {{ $pumpOn ? 'bg-success' : 'bg-muted-foreground' }}"></span>
+                </span>
+                {{ $pumpOn ? 'Pompa Aktif' : 'Pompa Mati' }}
+            </x-ui.badge>
+        </div>
     </div>
 </div>
 
