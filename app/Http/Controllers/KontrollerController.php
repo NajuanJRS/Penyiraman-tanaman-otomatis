@@ -54,14 +54,19 @@ class KontrollerController extends Controller
 
     public function off()
     {
-        Kontroller::updateOrCreate(
-            ['id_kontroller' => 1],
-            [
-                'mode_otomatis' => 0,
-                'mode_manual' => 0
-            ]
-        );
+        $kontrol = Kontroller::first();
 
-        return redirect('kontrol')->with('success', 'Semua Mode Dimatikan');
+        // Jika mode manual aktif → matikan manual, fallback ke otomatis
+        if ($kontrol && $kontrol->mode_manual == 1) {
+            $kontrol->update([
+                'mode_otomatis' => 1,
+                'mode_manual' => 0,
+            ]);
+
+            return redirect('kontrol')->with('success', 'Mode Manual dimatikan. Mode Otomatis diaktifkan kembali.');
+        }
+
+        // Jika mode otomatis aktif → tidak bisa dimatikan tanpa menyalakan manual
+        return redirect('kontrol')->with('error', 'Mode Otomatis tidak dapat dimatikan. Sistem harus memiliki satu mode aktif.');
     }
 }

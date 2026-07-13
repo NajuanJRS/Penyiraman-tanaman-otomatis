@@ -17,8 +17,11 @@ class DashboardController extends Controller
         $latestPrediksi = Prediksi::orderBy('id_prediksi', 'desc')->first();
         CarbonAlias::setLocale('id');
 
-        // Status pompa
-        $status = ($latestPrediksi && $latestPrediksi->decision == 'Siram') ? 'Aktif' : 'Mati';
+        // Status pompa: aktif jika decision = Siram ATAU mode_manual = 1
+        $kontrol = Kontroller::first();
+        $modeManual = $kontrol->mode_manual ?? 0;
+        $status = (($latestPrediksi && $latestPrediksi->decision == 'Siram') || $modeManual == 1) ? 'Aktif' : 'Mati';
+        $decision = $modeManual == 1 ? 'Siram' : ($latestPrediksi->decision ?? 'Tidak Siram');
 
         // Cek konektivitas ESP32: aktif jika data terakhir diterima dalam 15 menit
         $sistemAktif = $latestPerkembangan
@@ -61,7 +64,7 @@ class DashboardController extends Controller
             'tanah' => $latestPerkembangan->kelembapan_tanah ?? 0,
             'udara' => $latestPerkembangan->kelembapan_udara ?? 0,
             'suhu' => $latestPerkembangan->suhu ?? 0,
-            'decision' => $latestPrediksi->decision ?? 'Tidak Siram',
+            'decision' => $decision,
             'status' => $status,
 
             // 🔥 kirim data baru (BUKAN labels lagi)
